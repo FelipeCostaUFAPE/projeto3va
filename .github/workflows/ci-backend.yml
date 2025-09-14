@@ -1,0 +1,33 @@
+# Nome do workflow que aparecerá na aba "Actions" do GitHub
+name: CI Backend - Java with Maven
+
+# Define os gatilhos: este workflow roda em cada push ou pull request para a branch 'main'
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+# Define os "trabalhos" (jobs) a serem executados
+jobs:
+  build:
+    # Usa a versão mais recente do Ubuntu como sistema operacional da máquina virtual
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Baixa o código do seu repositório para a máquina virtual
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # 2. Configura o ambiente Java (JDK) na versão 17, a mesma do nosso projeto
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    # 3. Executa os testes usando o Maven
+    # O comando 'mvn -B test' roda os testes
+    # A flag '-Ptest' ativa o perfil "test", fazendo o Spring Boot usar o application-test.properties
+    - name: Build and run tests
+      run: mvn -B test -Ptest
