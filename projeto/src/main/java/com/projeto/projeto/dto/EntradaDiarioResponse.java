@@ -11,7 +11,6 @@ public record EntradaDiarioResponse(
         Integer humor,
         boolean rascunho
 ) {
-    // Construtor que converte a Entidade para o DTO
     public EntradaDiarioResponse(EntradaDiario entrada) {
         this(
             entrada.getId(),
