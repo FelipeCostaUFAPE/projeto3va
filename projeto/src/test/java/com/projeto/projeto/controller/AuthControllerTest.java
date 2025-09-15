@@ -24,10 +24,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-// A anotação foi atualizada para excluir os filtros de segurança
+// A anotação foi atualizada para excluir as configurações de segurança durante este teste
 @WebMvcTest(controllers = AuthController.class,
     excludeFilters = {
-        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {SecurityConfig.class, JwtAuthFilter.class, ApplicationConfig.class})
+        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {SecurityConfig.class, ApplicationConfig.class, JwtAuthFilter.class})
     }
 )
 public class AuthControllerTest {
