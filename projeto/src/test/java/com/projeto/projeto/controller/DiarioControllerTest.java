@@ -18,6 +18,8 @@ import java.util.Collections;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
+
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -32,12 +34,11 @@ public class DiarioControllerTest {
     @MockBean
     private DiarioService diarioService;
 
-    // Esses beans são necessários para o contexto de segurança, então os mockamos também
     @MockBean
     private JwtService jwtService;
 
     @Test
-    @WithMockUser(username = "teste@email.com") // Simula um usuário autenticado
+    @WithMockUser(username = "teste@email.com")
     void deveCriarEntradaComSucesso() throws Exception {
         EntradaDiarioRequest request = new EntradaDiarioRequest("Novo post", 4, false);
         EntradaDiarioResponse response = new EntradaDiarioResponse(1L, "Novo post", LocalDateTime.now(), 4, false);
@@ -46,7 +47,8 @@ public class DiarioControllerTest {
 
         mockMvc.perform(post("/api/diario")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"conteudo\":\"Novo post\",\"humor\":4,\"rascunho\":false}"))
+                .content("{\"conteudo\":\"Novo post\",\"humor\":4,\"rascunho\":false}")
+                .with(csrf()))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.conteudo").value("Novo post"));
     }
