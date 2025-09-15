@@ -1,33 +1,44 @@
-# Nome do workflow que aparecerá na aba "Actions" do GitHub
 name: CI Backend - Java with Maven
 
-# Define os gatilhos: este workflow roda em cada push ou pull request para a branch 'main'
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
-# Define os "trabalhos" (jobs) a serem executados
 jobs:
   build:
-    # Usa a versão mais recente do Ubuntu como sistema operacional da máquina virtual
     runs-on: ubuntu-latest
 
     steps:
-    # 1. Baixa o código do seu repositório para a máquina virtual
     - name: Checkout repository
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0 # Necessário para o SonarCloud analisar o histórico completo
 
-    # 2. Configura o ambiente Java (JDK) na versão 17, a mesma do nosso projeto
     - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
 
-    # 3. Executa os testes usando o Maven
-    # O comando 'mvn -B test' roda os testes
-    # A flag '-Ptest' ativa o perfil "test", fazendo o Spring Boot usar o application-test.properties
-    - name: Build and run tests
-      run: mvn -B test -Ptest
+    - name: Cache SonarCloud packages
+      uses: actions/cache@v4
+      with:
+        path: ~/.sonar/cache
+        key: ${{ runner.os }}-sonar
+        restore-keys: ${{ runner.os }}-sonar
+    - name: Cache Maven packages
+      uses: actions/cache@v4
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+
+    # Este comando agora compila, testa E envia a análise para o SonarCloud
+    - name: Build, test and analyze with SonarCloud
+      env:
+        # Passa os secrets que configuramos no GitHub para o workflow
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Ptest
