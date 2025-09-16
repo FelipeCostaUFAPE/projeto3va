@@ -41,7 +41,7 @@
         <span class="entry-mood" *ngIf="entry.humor">Humor: {{ entry.humor }} / 5</span>
         <span class="entry-draft" *ngIf="entry.rascunho">(Rascunho)</span>
       </div>
-      <div class="entry-content"><p>{{ entry.conteudo }}</p></div>
+      <div class="entry-content"><p [innerHTML]="highlightContent(entry.conteudo)"></p></div>
     </div>
   </div>
 </div>

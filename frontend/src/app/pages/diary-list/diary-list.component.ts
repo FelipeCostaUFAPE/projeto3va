@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DiaryService } from '../../services/diary';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-diary-list',
@@ -15,7 +16,7 @@ export class DiaryListComponent implements OnInit {
   newEntryForm: FormGroup;
   searchForm: FormGroup;
 
-  constructor(private diaryService: DiaryService, private fb: FormBuilder) {
+  constructor(private diaryService: DiaryService, private fb: FormBuilder, private sanitizer: DomSanitizer) {
     this.newEntryForm = this.fb.group({
       conteudo: ['', Validators.required],
       humor: [null],
@@ -59,6 +60,21 @@ export class DiaryListComponent implements OnInit {
         },
         error: (err: any) => console.error('Erro ao criar entrada', err)
       });
+    }
+  }
+
+  highlightContent(text: string): SafeHtml {
+    const term: string = (this.searchForm.get('palavraChave')?.value || '').trim();
+    if (!term) {
+      return text;
+    }
+    try {
+      const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(`(${escaped})`, 'gi');
+      const html = text.replace(regex, '<mark>$1</mark>');
+      return this.sanitizer.bypassSecurityTrustHtml(html);
+    } catch {
+      return text;
     }
   }
 }
