@@ -31,15 +31,19 @@ export class RegisterComponent {
 
   onSubmit() {
     if (this.registerForm.valid && !this.isLoading) {
-      
+      const { senha } = this.registerForm.value;
+      if (!this.authService.hasStrongPassword(senha)) {
+        this.errorMessage = 'A senha deve ter 8+ caracteres, com maiúscula, minúscula, número e caractere especial.';
+        return;
+      }
       this.isLoading = true;
       this.errorMessage = null;
 
       this.authService.register(this.registerForm.value).subscribe({
         next: () => {
           console.log('Cadastro bem-sucedido!');
-          alert('Cadastro realizado com sucesso! Você será redirecionado para o diário.');
-          this.router.navigate(['/diario']);
+          alert('Cadastro realizado com sucesso! Faça login para continuar.');
+          this.router.navigate(['/login']);
           this.isLoading = false;
         },
         error: (err: any) => {

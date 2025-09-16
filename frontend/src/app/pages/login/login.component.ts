@@ -44,7 +44,7 @@ export class LoginComponent {
         },
         error: (err: any) => {
           console.error('Falha no login', err);
-          this.errorMessage = "E-mail ou senha inválidos. Tente novamente.";
+          this.errorMessage = "E-mail ou senha incorretos.";
           this.isLoading = false;
         }
       });

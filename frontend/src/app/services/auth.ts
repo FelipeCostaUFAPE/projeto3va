@@ -41,6 +41,12 @@ export class AuthService {
     return localStorage.getItem(this.TOKEN_KEY);
   }
 
+  hasStrongPassword(password: string): boolean {
+    // Mínimo 8, pelo menos 1 maiúscula, 1 minúscula, 1 número e 1 especial
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return regex.test(password);
+  }
+
   logout(): void {
     localStorage.removeItem(this.TOKEN_KEY);
   }
