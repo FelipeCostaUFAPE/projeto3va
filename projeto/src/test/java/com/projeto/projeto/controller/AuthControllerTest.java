@@ -1,9 +1,6 @@
 package com.projeto.projeto.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.projeto.projeto.config.ApplicationConfig;
-import com.projeto.projeto.config.SecurityConfig;
-import com.projeto.projeto.config.security.JwtAuthFilter;
 import com.projeto.projeto.config.security.JwtService;
 import com.projeto.projeto.dto.AuthRequest;
 import com.projeto.projeto.dto.AuthResponse;
@@ -13,23 +10,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+// Importe o csrf aqui
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-// A anotação foi atualizada para excluir as configurações de segurança durante este teste
-@WebMvcTest(controllers = AuthController.class,
-    excludeFilters = {
-        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {SecurityConfig.class, ApplicationConfig.class, JwtAuthFilter.class})
-    }
-)
+@WebMvcTest(AuthController.class)
 public class AuthControllerTest {
 
     @Autowired
@@ -53,7 +45,9 @@ public class AuthControllerTest {
 
         mockMvc.perform(post("/api/auth/cadastrar")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                // Adicione o .with(csrf()) para passar pela proteção
+                .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.token").value("novo-token-jwt"));
     }
@@ -67,7 +61,9 @@ public class AuthControllerTest {
 
         mockMvc.perform(post("/api/auth/autenticar")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(objectMapper.writeValueAsString(request))
+                // Adicione o .with(csrf()) também aqui
+                .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.token").value("token-jwt-existente"));
     }
