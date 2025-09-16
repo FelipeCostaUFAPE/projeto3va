@@ -19,7 +19,7 @@ public class EntradaDiario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 5000, nullable = false)
+    @Column(length = 5000, nullable = false, columnDefinition = "TEXT")
     private String conteudo;
 
     @Column(nullable = false, updatable = false)
