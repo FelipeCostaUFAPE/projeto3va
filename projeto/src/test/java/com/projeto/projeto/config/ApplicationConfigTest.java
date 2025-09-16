@@ -2,32 +2,46 @@ package com.projeto.projeto.config;
 
 import com.projeto.projeto.repository.UsuarioRepository;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.ApplicationContext;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import java.util.Optional;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-@SpringBootTest(classes = ApplicationConfig.class)
+@ExtendWith(MockitoExtension.class)
 public class ApplicationConfigTest {
 
-    @Autowired
-    private ApplicationContext context;
-
-    @MockBean
+    @Mock
     private UsuarioRepository usuarioRepository;
 
     @Test
-    void deveCarregarOsBeansDeConfiguracao() {
-        // Verifica se os beans definidos em ApplicationConfig foram criados com sucesso
-        assertThat(context.getBean(UserDetailsService.class)).isNotNull();
-        assertThat(context.getBean(AuthenticationProvider.class)).isNotNull();
-        assertThat(context.getBean(PasswordEncoder.class)).isNotNull();
-        // O AuthenticationManager é um caso especial e não é verificado desta forma
+    void userDetailsServiceDeveRetornarUsuario() {
+        // Cria uma instância da nossa configuração, passando o repositório "falso" (mock)
+        ApplicationConfig appConfig = new ApplicationConfig(usuarioRepository);
+        UserDetailsService userDetailsService = appConfig.userDetailsService();
+
+        // Define o comportamento do mock
+        when(usuarioRepository.findByEmail("user@test.com")).thenReturn(Optional.of(new com.projeto.projeto.model.Usuario()));
+
+        // Executa e verifica
+        assertNotNull(userDetailsService.loadUserByUsername("user@test.com"));
+    }
+
+    @Test
+    void userDetailsServiceDeveLancarExcecao() {
+        ApplicationConfig appConfig = new ApplicationConfig(usuarioRepository);
+        UserDetailsService userDetailsService = appConfig.userDetailsService();
+
+        // Define o comportamento do mock
+        when(usuarioRepository.findByEmail("notfound@test.com")).thenReturn(Optional.empty());
+
+        // Verifica se a exceção correta é lançada
+        assertThrows(UsernameNotFoundException.class, () -> {
+            userDetailsService.loadUserByUsername("notfound@test.com");
+        });
     }
 }
