@@ -1,1 +1,21 @@
-<p>register works!</p>
+<div class="register-container">
+  <h2>Cadastro</h2>
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="nomeCompleto">Nome Completo</label>
+      <input id="nomeCompleto" type="text" formControlName="nomeCompleto" required>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email" required>
+    </div>
+
+    <div class="form-group">
+      <label for="senha">Senha</label>
+      <input id="senha" type="password" formControlName="senha" required>
+    </div>
+
+    <button type="submit" [disabled]="registerForm.invalid">Cadastrar</button>
+  </form>
+</div>
