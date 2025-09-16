@@ -20,7 +20,6 @@ public class EntradaDiario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Lob
     @Column(nullable = false, length = 5000)
     private String conteudo;
 
