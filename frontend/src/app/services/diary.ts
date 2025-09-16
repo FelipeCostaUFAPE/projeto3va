@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -7,16 +7,21 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class DiaryService {
-  private readonly API_URL = `${environment.apiUrl}/api/auth`;
+  private readonly API_URL = `${environment.apiUrl}/api/diario`;
 
   constructor(private http: HttpClient) { }
 
-  // Busca todas as entradas do diário para o usuário logado
-  getEntries(): Observable<any> {
-    return this.http.get(this.API_URL);
+  getEntries(palavraChave?: string, data?: string): Observable<any> {
+    let params = new HttpParams();
+    if (palavraChave) {
+      params = params.set('palavraChave', palavraChave);
+    }
+    if (data) {
+      params = params.set('data', data);
+    }
+    return this.http.get(this.API_URL, { params });
   }
 
-  // Cria uma nova entrada no diário
   createEntry(data: any): Observable<any> {
     return this.http.post(this.API_URL, data);
   }

@@ -13,6 +13,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 export class DiaryListComponent implements OnInit {
   entries: any[] = [];
   newEntryForm: FormGroup;
+  searchForm: FormGroup;
 
   constructor(private diaryService: DiaryService, private fb: FormBuilder) {
     this.newEntryForm = this.fb.group({
@@ -20,23 +21,35 @@ export class DiaryListComponent implements OnInit {
       humor: [null],
       rascunho: [false]
     });
+
+    this.searchForm = this.fb.group({
+      palavraChave: [''],
+      data: ['']
+    });
   }
 
   ngOnInit(): void {
     this.loadEntries();
   }
 
-  loadEntries(): void {
-    
-    this.diaryService.getEntries().subscribe({
-      next: (data: any) => {
-        this.entries = data;
-      },
+  loadEntries(palavraChave?: string, data?: string): void {
+    this.diaryService.getEntries(palavraChave, data).subscribe({
+      next: (data: any) => { this.entries = data; },
       error: (err: any) => console.error('Erro ao buscar entradas', err)
     });
   }
 
-  onSubmit(): void {
+  onSearch(): void {
+    const { palavraChave, data } = this.searchForm.value;
+    this.loadEntries(palavraChave, data);
+  }
+
+  clearSearch(): void {
+    this.searchForm.reset({ palavraChave: '', data: '' });
+    this.loadEntries();
+  }
+
+  onSubmitNewEntry(): void {
     if (this.newEntryForm.valid) {
       this.diaryService.createEntry(this.newEntryForm.value).subscribe({
         next: () => {
@@ -44,7 +57,6 @@ export class DiaryListComponent implements OnInit {
           this.newEntryForm.reset({ rascunho: false });
           this.loadEntries();
         },
-        
         error: (err: any) => console.error('Erro ao criar entrada', err)
       });
     }
