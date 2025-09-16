@@ -14,8 +14,18 @@
     <div class="form-group">
       <label for="senha">Senha</label>
       <input id="senha" type="password" formControlName="senha" required>
+      <small class="password-hint">
+        A senha deve ter no mínimo 8 caracteres, com letras maiúsculas, minúsculas, números e um caractere especial (@$!%*?&).
+      </small>
     </div>
 
-    <button type="submit" [disabled]="registerForm.invalid">Cadastrar</button>
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <button type="submit" [disabled]="registerForm.invalid || isLoading">
+      <span *ngIf="!isLoading">Cadastrar</span>
+      <span *ngIf="isLoading">Cadastrando...</span>
+    </button>
   </form>
 </div>

@@ -11,3 +11,19 @@ label { display: block; margin-bottom: 5px; }
 input { width: 100%; padding: 8px; box-sizing: border-box; }
 button { width: 100%; padding: 10px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; }
 button:disabled { background-color: #ccc; cursor: not-allowed; }
+
+.password-hint {
+  font-size: 0.75em;
+  color: #6c757d;
+  display: block;
+  margin-top: 5px;
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  text-align: center;
+}
