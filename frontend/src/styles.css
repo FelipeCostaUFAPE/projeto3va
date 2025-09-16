@@ -11,6 +11,9 @@
   --background-color: #f4f7f6;
   --text-color: #212529;
   --border-color: #dee2e6;
+  --radius: 10px;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 body {
@@ -26,4 +29,37 @@ body {
   max-width: 800px;
   margin: 20px auto;
   padding: 20px;
+}
+
+/* Utilitários de UI */
+.card {
+  background-color: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 1.5rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  background: var(--primary-color);
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.05s ease, background-color 0.2s ease;
+}
+
+.btn:hover { background: #0056b3; }
+.btn:active { transform: translateY(1px); }
+.btn[disabled] { background: #c8c8c8; cursor: not-allowed; }
+
+mark {
+  background: #ffec99;
+  padding: 0 2px;
+  border-radius: 3px;
 }
