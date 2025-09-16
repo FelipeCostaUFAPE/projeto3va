@@ -17,4 +17,8 @@ export class NavbarComponent {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
+
+  goToDiary(): void {
+    this.router.navigate(['/diario']);
+  }
 }
