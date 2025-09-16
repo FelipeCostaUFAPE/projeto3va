@@ -38,6 +38,16 @@ textarea {
   margin-bottom: 1rem;
 }
 
+.form-row input[type="text"], .form-row input[type="date"] {
+  flex: 1;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  margin-right: 0.5rem;
+}
+
+.form-row .btn { margin-right: 0.5rem; }
+
 .mood-selector input {
   width: 60px;
 }

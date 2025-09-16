@@ -6,7 +6,7 @@
       <a routerLink="/cadastro">Cadastrar</a>
     </ng-container>
     <ng-container *ngIf="authService.isAuthenticated()">
-      <a (click)="goToDiary()">Minhas Entradas</a>
+      <a routerLink="/diario" routerLinkActive="active">Minhas Entradas</a>
       <button (click)="logout()">Sair</button>
     </ng-container>
   </div>

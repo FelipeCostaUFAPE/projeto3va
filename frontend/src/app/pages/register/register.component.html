@@ -23,7 +23,7 @@
       {{ errorMessage }}
     </div>
 
-    <button type="submit" [disabled]="registerForm.invalid || isLoading">
+    <button class="btn" type="submit" [disabled]="registerForm.invalid || isLoading">
       <span *ngIf="!isLoading">Cadastrar</span>
       <span *ngIf="isLoading">Cadastrando...</span>
     </button>

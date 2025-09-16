@@ -14,7 +14,7 @@
           <label><input type="checkbox" formControlName="rascunho"> Salvar como rascunho</label>
         </div>
       </div>
-      <button type="submit" [disabled]="newEntryForm.invalid">Salvar Entrada</button>
+      <button class="btn" type="submit" [disabled]="newEntryForm.invalid">Salvar Entrada</button>
     </form>
   </div>
 
@@ -24,8 +24,8 @@
       <div class="form-row">
         <input type="text" formControlName="palavraChave" placeholder="Buscar por palavra-chave...">
         <input type="date" formControlName="data">
-        <button type="submit">Buscar</button>
-        <button type="button" (click)="clearSearch()">Limpar</button>
+        <button class="btn" type="submit">Buscar</button>
+        <button class="btn btn-outline" type="button" (click)="clearSearch()">Limpar</button>
       </div>
     </form>
   </div>
