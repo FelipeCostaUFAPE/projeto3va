@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly API_URL = 'http://localhost:8080/api/auth';
+  private readonly API_URL = `${environment.apiUrl}/api/auth`;
   private readonly TOKEN_KEY = 'auth_token';
 
   constructor(private http: HttpClient) { }
@@ -21,7 +22,7 @@ export class AuthService {
     );
   }
 
-  // NOVO MÉTODO
+ 
   register(data: any) {
     return this.http.post<any>(`${this.API_URL}/cadastrar`, data).pipe(
       tap(response => {

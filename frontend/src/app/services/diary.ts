@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DiaryService {
-  private readonly API_URL = 'http://localhost:8080/api/diario';
+  private readonly API_URL = `${environment.apiUrl}/api/auth`;
 
   constructor(private http: HttpClient) { }
 
