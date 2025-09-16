@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-// Importe o csrf aqui
+
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -46,7 +46,7 @@ public class AuthControllerTest {
         mockMvc.perform(post("/api/auth/cadastrar")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
-                // Adicione o .with(csrf()) para passar pela proteção
+                
                 .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.token").value("novo-token-jwt"));
@@ -62,7 +62,7 @@ public class AuthControllerTest {
         mockMvc.perform(post("/api/auth/autenticar")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
-                // Adicione o .with(csrf()) também aqui
+                
                 .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.token").value("token-jwt-existente"));
