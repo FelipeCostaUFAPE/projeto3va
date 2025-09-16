@@ -7,8 +7,14 @@
       <textarea formControlName="conteudo" placeholder="No que você está pensando?" rows="5"></textarea>
       <div class="form-row">
         <div class="form-group mood-selector">
-          <label for="humor">Humor (1 a 5):</label>
-          <input type="number" id="humor" formControlName="humor" min="1" max="5">
+          <label>Humor:</label>
+          <div class="mood-pills">
+            <button type="button" class="pill" [class.active]="newEntryForm.get('humor')?.value===1" (click)="newEntryForm.get('humor')?.setValue(1)">1</button>
+            <button type="button" class="pill" [class.active]="newEntryForm.get('humor')?.value===2" (click)="newEntryForm.get('humor')?.setValue(2)">2</button>
+            <button type="button" class="pill" [class.active]="newEntryForm.get('humor')?.value===3" (click)="newEntryForm.get('humor')?.setValue(3)">3</button>
+            <button type="button" class="pill" [class.active]="newEntryForm.get('humor')?.value===4" (click)="newEntryForm.get('humor')?.setValue(4)">4</button>
+            <button type="button" class="pill" [class.active]="newEntryForm.get('humor')?.value===5" (click)="newEntryForm.get('humor')?.setValue(5)">5</button>
+          </div>
         </div>
         <div class="form-group draft-selector">
           <label><input type="checkbox" formControlName="rascunho"> Salvar como rascunho</label>
